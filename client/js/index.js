@@ -19,6 +19,7 @@ function printPet(pet) {
 function httpGet(theUrl) {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open("GET", theUrl, false); // false for synchronous request
+    xmlHttp.setRequestHeader("Content-Type", "application/json");
     xmlHttp.send(null);
     return JSON.parse(xmlHttp.responseText);
 }

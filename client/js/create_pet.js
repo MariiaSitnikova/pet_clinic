@@ -19,14 +19,14 @@ function createPet(event) {
     var namePet = document.getElementById('name').value;
     var date = document.getElementById('birthDate').value;
     var petType = document.getElementById('type');
-    var petTypeEl = petType.options[petType.selectedIndex].text;
+    var petTypeEl = petType.options[petType.selectedIndex].value;
     var owner = document.getElementById('owner');
-    var ownerEl = owner.options[owner.selectedIndex].text;
+    var ownerEl = owner.options[owner.selectedIndex].value;
     var body = {
         name: namePet,
         birthDate: date,
-        type: petTypeEl,
-        owner: ownerEl
+        typeId: petTypeEl,
+        ownerId: ownerEl
     };
     console.log(body);
     httpPost(api + 'pets', body);
@@ -35,6 +35,7 @@ function createPet(event) {
 function httpGet(theUrl) {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open("GET", theUrl, false); // false for synchronous request
+    xmlHttp.setRequestHeader("Content-Type", "application/json");
     xmlHttp.send(null);
     return JSON.parse(xmlHttp.responseText);
 }
@@ -42,7 +43,8 @@ function httpGet(theUrl) {
 function httpPost(theUrl, body) {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open("POST", theUrl, false); // false for synchronous request
-    xmlHttp.send(body);
+    xmlHttp.setRequestHeader("Content-Type", "application/json");
+    xmlHttp.send(JSON.stringify(body));
     return JSON.parse(xmlHttp.responseText);
 }
 var petType = getPetTypes();
