@@ -27,6 +27,6 @@ import java.util.UUID;
  *
  */
 
-public interface PetTypeRepository extends JpaRepository<PetType, UUID> {
+public interface PetTypeRepository extends JpaRepository<PetType, String> {
 
 }

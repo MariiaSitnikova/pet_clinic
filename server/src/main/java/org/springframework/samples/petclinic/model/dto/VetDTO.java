@@ -1,13 +1,14 @@
 package org.springframework.samples.petclinic.model.dto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
 @Data
+@NoArgsConstructor
 public class VetDTO {
-
-    private final String firstName;
-    private final String lastName;
-    private final Set<String> specialitiesIds;
+    private String firstName;
+    private String lastName;
+    private Set<String> specialitiesIds;
 }

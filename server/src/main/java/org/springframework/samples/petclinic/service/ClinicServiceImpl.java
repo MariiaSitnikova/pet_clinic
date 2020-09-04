@@ -78,7 +78,7 @@ public class ClinicServiceImpl implements ClinicService {
     @Override
     @Transactional
     public Pet findPetById(String id) {
-        return petRepository.findById(UUID.fromString(id)).orElseThrow(() -> new EntityNotFoundException(id, "Pet"));
+        return petRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(id, "Pet"));
     }
 
     @Override
@@ -113,7 +113,7 @@ public class ClinicServiceImpl implements ClinicService {
     @Override
     public void deletePet(String id) {
         findPetById(id);
-        petTypeRepository.deleteById(UUID.fromString(id));
+        petTypeRepository.deleteById(id);
     }
 
     @Override
@@ -123,7 +123,7 @@ public class ClinicServiceImpl implements ClinicService {
 
     @Override
     public Visit findVisitById(String visitId) {
-        return visitRepository.findById(UUID.fromString(visitId)).orElseThrow(() -> new EntityNotFoundException(visitId, "Visit"));
+        return visitRepository.findById(visitId).orElseThrow(() -> new EntityNotFoundException(visitId, "Visit"));
     }
 
     @Override
@@ -155,12 +155,12 @@ public class ClinicServiceImpl implements ClinicService {
     @Override
     public void deleteVisit(String visitId) {
         findVetById(visitId);
-        visitRepository.deleteById(UUID.fromString(visitId));
+        visitRepository.deleteById(visitId);
     }
 
     @Override
     public Vet findVetById(String id) {
-        return vetRepository.findById(UUID.fromString(id)).orElseThrow(() -> new EntityNotFoundException(id, "Vet"));
+        return vetRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(id, "Vet"));
     }
 
     @Override
@@ -196,12 +196,12 @@ public class ClinicServiceImpl implements ClinicService {
     @Override
     public void deleteVet(String vetId) {
         findVetById(vetId);
-        vetRepository.deleteById(UUID.fromString(vetId));
+        vetRepository.deleteById(vetId);
     }
 
     @Override
     public Owner findOwnerById(String id) {
-        return ownerRepository.findById(UUID.fromString(id))
+        return ownerRepository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException(id, "Owner"));
     }
 
@@ -236,12 +236,12 @@ public class ClinicServiceImpl implements ClinicService {
     @Override
     public void deleteOwner(String ownerId) {
         findOwnerById(ownerId);
-        ownerRepository.deleteById(UUID.fromString(ownerId));
+        ownerRepository.deleteById(ownerId);
     }
 
     @Override
     public PetType findPetTypeById(String petTypeId) {
-        return petTypeRepository.findById(UUID.fromString(petTypeId))
+        return petTypeRepository.findById(petTypeId)
             .orElseThrow(() -> new EntityNotFoundException(petTypeId, "PetType"));
     }
 
@@ -269,12 +269,12 @@ public class ClinicServiceImpl implements ClinicService {
     @Override
     public void deletePetType(String petTypeId) {
         findPetById(petTypeId);
-        petTypeRepository.deleteById(UUID.fromString(petTypeId));
+        petTypeRepository.deleteById(petTypeId);
     }
 
     @Override
     public Specialty findSpecialtyById(String specialtyId) {
-        return specialtyRepository.findById(UUID.fromString(specialtyId)).orElseThrow(() -> new EntityNotFoundException(specialtyId, "Speciality"));
+        return specialtyRepository.findById(specialtyId).orElseThrow(() -> new EntityNotFoundException(specialtyId, "Speciality"));
     }
 
     @Override
@@ -300,6 +300,6 @@ public class ClinicServiceImpl implements ClinicService {
     @Override
     public void deleteSpecialty(String specialtyID) {
         findPetById(specialtyID);
-        specialtyRepository.deleteById(UUID.fromString(specialtyID));
+        specialtyRepository.deleteById(specialtyID);
     }
 }

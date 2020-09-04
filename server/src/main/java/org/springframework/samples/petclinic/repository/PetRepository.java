@@ -32,5 +32,5 @@ import java.util.UUID;
  * @author Vitaliy Fedoriv
  */
 @Repository
-public interface PetRepository extends JpaRepository<Pet, UUID> {
+public interface PetRepository extends JpaRepository<Pet, String> {
 }

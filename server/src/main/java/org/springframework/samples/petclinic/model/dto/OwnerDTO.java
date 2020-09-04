@@ -1,12 +1,14 @@
 package org.springframework.samples.petclinic.model.dto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class OwnerDTO {
-    private final String firstName;
-    private final String lastName;
-    private final String address;
-    private final String telephone;
-    private final String city;
+    private String firstName;
+    private String lastName;
+    private String address;
+    private String telephone;
+    private String city;
 }

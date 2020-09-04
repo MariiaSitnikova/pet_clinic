@@ -44,6 +44,10 @@ public class BaseEntity {
         return id;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public void setId(UUID id) {
         this.id = id.toString();
     }

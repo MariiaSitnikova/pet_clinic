@@ -30,5 +30,5 @@ import java.util.UUID;
  * @author Michael Isvy
  * @author Vitaliy Fedoriv
  */
-public interface OwnerRepository extends JpaRepository<Owner, UUID> {
+public interface OwnerRepository extends JpaRepository<Owner, String> {
 }

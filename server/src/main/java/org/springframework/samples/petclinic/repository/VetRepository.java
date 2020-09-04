@@ -34,5 +34,5 @@ import org.springframework.samples.petclinic.model.Vet;
  * @author Michael Isvy
  * @author Vitaliy Fedoriv
  */
-public interface VetRepository extends JpaRepository<Vet, UUID> {
+public interface VetRepository extends JpaRepository<Vet, String> {
 }

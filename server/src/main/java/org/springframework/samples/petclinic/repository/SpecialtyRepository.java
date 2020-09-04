@@ -30,5 +30,5 @@ import org.springframework.samples.petclinic.model.Specialty;
  *
  */
 
-public interface SpecialtyRepository extends JpaRepository<Specialty, UUID> {
+public interface SpecialtyRepository extends JpaRepository<Specialty, String> {
 }

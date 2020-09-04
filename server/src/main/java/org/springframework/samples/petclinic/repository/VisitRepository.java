@@ -31,7 +31,7 @@ import java.util.UUID;
  * @author Michael Isvy
  * @author Vitaliy Fedoriv
  */
-public interface VisitRepository extends JpaRepository<Visit, UUID> {
+public interface VisitRepository extends JpaRepository<Visit, String> {
 
     List<Visit> findByPetId(UUID petId);
 
