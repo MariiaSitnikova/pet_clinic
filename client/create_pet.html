@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+</head>
+<body>
+<div id="header">
+    <img src="img/p_1.jpg"/>
+</div>
+<div id="form">
+    <form>
+        <label for="name">Pet Name</label><br>
+        <input type="text" id="name" name="name" required><br>
+        <label for="birthDate">Birth Date</label><br>
+        <input type="date" id="birthDate" name="birthDate" required><br>
+        <div id = type_select>
+
+        <select id="type" name="type" required>
+            <option value="" disabled selected>Select Pet Type</option>
+        </select><br>
+        </div>
+        <div id = owner_select>
+        <select id="owner" name="owner" required>
+            <option value="" disabled selected>Select Pet Owner</option>
+        </select>
+        </div>
+        <button id="submit">Submit</button>
+    </form>
+</div>
+</body>
+<script src="js/create_pet.js"></script>
+</html>

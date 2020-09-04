@@ -1,0 +1,51 @@
+#pets li {
+    width: 50%;
+    position: relative;
+    display: block;
+    padding: .4em .4em .4em 2em;
+    margin: 10px 460px;
+    background: #c4e7da;
+    color: #2b2627;
+    text-decoration: none;
+    border-radius: .3em;
+    transition: .3s ease-out;
+    justify-content: center;
+    font-size: 30px;
+}
+#header {
+    position: relative;
+    margin-left: 493px;
+}
+
+input {
+    width: 50%;
+    padding: 12px 20px;
+    margin: 15px 0;
+    box-sizing: border-box;
+    background: aquamarine;
+}
+label{
+    font-size: 20px;
+    font-weight: bold;
+    font-family: "Bell MT";
+}
+#form{
+    width: 50%;
+    position: relative;
+    margin: 0 765px;
+}
+
+#type_select, #owner_select {
+    margin-top: 30px;
+}
+#owner_select {
+    margin-bottom: 40px;
+}
+select {
+    width: 130px;
+    height: 50px;
+}
+#submit {
+    width: 78px;
+    height: 33px;
+}
