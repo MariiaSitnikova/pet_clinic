@@ -1,10 +1,10 @@
-package org.springframework.samples.petclinic.model.dto;
+package org.springframework.samples.petclinic.dto.request;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class PetTypeDTO {
+public class PetTypeRequestDTO {
    private String name;
 }

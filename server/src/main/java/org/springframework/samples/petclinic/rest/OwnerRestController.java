@@ -19,8 +19,9 @@ package org.springframework.samples.petclinic.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.samples.petclinic.dto.response.OwnerResponseDTO;
 import org.springframework.samples.petclinic.model.Owner;
-import org.springframework.samples.petclinic.model.dto.OwnerDTO;
+import org.springframework.samples.petclinic.dto.request.OwnerRequestDTO;
 import org.springframework.samples.petclinic.service.ClinicService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -48,31 +49,31 @@ public class OwnerRestController {
 
     @PreAuthorize("hasRole(@roles.OWNER_ADMIN)")
     @RequestMapping(value = "", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity<Collection<Owner>> getOwners() {
-        Collection<Owner> owners = this.clinicService.findAllOwners();
+    public ResponseEntity<Collection<OwnerResponseDTO>> getOwners() {
+        Collection<OwnerResponseDTO> owners = this.clinicService.findAllOwners();
         return new ResponseEntity<>(owners, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole(@roles.OWNER_ADMIN)")
     @RequestMapping(value = "/{ownerId}", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity<Owner> getOwner(@PathVariable("ownerId") String ownerId) {
-        Owner owner = this.clinicService.findOwnerById(ownerId);
+    public ResponseEntity<OwnerResponseDTO> getOwner(@PathVariable("ownerId") String ownerId) {
+        OwnerResponseDTO owner = this.clinicService.findOwnerById(ownerId);
         return new ResponseEntity<>(owner, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole(@roles.OWNER_ADMIN)")
     @RequestMapping(value = "", method = RequestMethod.POST, produces = "application/json")
-    public ResponseEntity<Owner> addOwner(@RequestBody @Valid OwnerDTO owner) {
-        final Owner result = this.clinicService.saveOwner(owner);
-        return new ResponseEntity<Owner>(result, HttpStatus.CREATED);
+    public ResponseEntity<OwnerResponseDTO> addOwner(@RequestBody @Valid OwnerRequestDTO owner) {
+        final OwnerResponseDTO result = this.clinicService.saveOwner(owner);
+        return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
     @PreAuthorize("hasRole(@roles.OWNER_ADMIN)")
     @RequestMapping(value = "/{ownerId}", method = RequestMethod.PUT, produces = "application/json")
-    public ResponseEntity<Owner> updateOwner(@PathVariable("ownerId") String ownerId,
-                                             @RequestBody @Valid OwnerDTO owner
+    public ResponseEntity<OwnerResponseDTO> updateOwner(@PathVariable("ownerId") String ownerId,
+                                             @RequestBody @Valid OwnerRequestDTO owner
     ) {
-        final Owner result = this.clinicService.updateOwner(ownerId, owner);
+        final OwnerResponseDTO result = this.clinicService.updateOwner(ownerId, owner);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

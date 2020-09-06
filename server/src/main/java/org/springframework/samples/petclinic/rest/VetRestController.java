@@ -23,8 +23,9 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.samples.petclinic.dto.response.VetResponseDTO;
 import org.springframework.samples.petclinic.model.Vet;
-import org.springframework.samples.petclinic.model.dto.VetDTO;
+import org.springframework.samples.petclinic.dto.request.VetRequestDTO;
 import org.springframework.samples.petclinic.service.ClinicService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -49,29 +50,29 @@ public class VetRestController {
 
     @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<Collection<Vet>> getAllVets(){
-		Collection<Vet> vets = this.clinicService.findAllVets();
+	public ResponseEntity<Collection<VetResponseDTO>> getAllVets(){
+		Collection<VetResponseDTO> vets = this.clinicService.findAllVets();
 		return new ResponseEntity<>(vets, HttpStatus.OK);
 	}
 
     @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "/{vetId}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<Vet> getVet(@PathVariable("vetId") String vetId){
-		Vet vet = this.clinicService.findVetById(vetId);
+	public ResponseEntity<VetResponseDTO> getVet(@PathVariable("vetId") String vetId){
+        VetResponseDTO vet = this.clinicService.findVetById(vetId);
 		return new ResponseEntity<>(vet, HttpStatus.OK);
 	}
 
     @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<Vet> addVet(@RequestBody @Valid VetDTO vet){
-		final Vet result = this.clinicService.saveVet(vet);
+	public ResponseEntity<VetResponseDTO> addVet(@RequestBody @Valid VetRequestDTO vet){
+		final VetResponseDTO result = this.clinicService.saveVet(vet);
 		return new ResponseEntity<>(result, HttpStatus.CREATED);
 	}
 
     @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "/{vetId}", method = RequestMethod.PUT, produces = "application/json")
-	public ResponseEntity<Vet> updateVet(@PathVariable("vetId") String vetId, @RequestBody @Valid VetDTO vet){
-		Vet result = this.clinicService.updateVet(vetId, vet);
+	public ResponseEntity<VetResponseDTO> updateVet(@PathVariable("vetId") String vetId, @RequestBody @Valid VetRequestDTO vet){
+        VetResponseDTO result = this.clinicService.updateVet(vetId, vet);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 

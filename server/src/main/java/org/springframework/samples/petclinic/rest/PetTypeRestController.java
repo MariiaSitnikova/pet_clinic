@@ -19,8 +19,9 @@ package org.springframework.samples.petclinic.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.samples.petclinic.dto.response.PetTypeResponseDTO;
 import org.springframework.samples.petclinic.model.PetType;
-import org.springframework.samples.petclinic.model.dto.PetTypeDTO;
+import org.springframework.samples.petclinic.dto.request.PetTypeRequestDTO;
 import org.springframework.samples.petclinic.service.ClinicService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -44,29 +45,29 @@ public class PetTypeRestController {
 
     @PreAuthorize( "hasAnyRole(@roles.OWNER_ADMIN, @roles.VET_ADMIN)" )
 	@RequestMapping(value = "", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<Collection<PetType>> getAllPetTypes(){
-        Collection<PetType> result = this.clinicService.findAllPetTypes();
+	public ResponseEntity<Collection<PetTypeResponseDTO>> getAllPetTypes(){
+        Collection<PetTypeResponseDTO> result = this.clinicService.findAllPetTypes();
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
     @PreAuthorize( "hasAnyRole(@roles.OWNER_ADMIN, @roles.VET_ADMIN)" )
 	@RequestMapping(value = "/{petTypeId}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<PetType> getPetType(@PathVariable("petTypeId") String petTypeId){
-		PetType petType = this.clinicService.findPetTypeById(petTypeId);
+	public ResponseEntity<PetTypeResponseDTO> getPetType(@PathVariable("petTypeId") String petTypeId){
+        PetTypeResponseDTO petType = this.clinicService.findPetTypeById(petTypeId);
 		return new ResponseEntity<>(petType, HttpStatus.OK);
 	}
 
     @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<PetType> addPetType(@RequestBody @Valid PetTypeDTO petType){
-		PetType type = this.clinicService.savePetType(petType);
+	public ResponseEntity<PetTypeResponseDTO> addPetType(@RequestBody @Valid PetTypeRequestDTO petType){
+        PetTypeResponseDTO type = this.clinicService.savePetType(petType);
 		return new ResponseEntity<>(type, HttpStatus.CREATED);
 	}
 
     @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "/{petTypeId}", method = RequestMethod.PUT, produces = "application/json")
-	public ResponseEntity<PetType> updatePetType(@PathVariable("petTypeId") String petTypeId, @RequestBody @Valid PetTypeDTO petType){
-        PetType result = this.clinicService.updatePetType(petTypeId, petType);
+	public ResponseEntity<PetTypeResponseDTO> updatePetType(@PathVariable("petTypeId") String petTypeId, @RequestBody @Valid PetTypeRequestDTO petType){
+        PetTypeResponseDTO result = this.clinicService.updatePetType(petTypeId, petType);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 

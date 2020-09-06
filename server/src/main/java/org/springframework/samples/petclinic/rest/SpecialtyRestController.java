@@ -19,8 +19,9 @@ package org.springframework.samples.petclinic.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.samples.petclinic.dto.response.SpecialtyResponseDTO;
 import org.springframework.samples.petclinic.model.Specialty;
-import org.springframework.samples.petclinic.model.dto.SpecialtyDTO;
+import org.springframework.samples.petclinic.dto.request.SpecialtyRequestDTO;
 import org.springframework.samples.petclinic.service.ClinicService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -49,29 +50,29 @@ public class SpecialtyRestController {
 
     @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<Collection<Specialty>> getAllSpecialtys(){
-		final Collection<Specialty> result = this.clinicService.findAllSpecialties();
+	public ResponseEntity<Collection<SpecialtyResponseDTO>> getAllSpecialtys(){
+		final Collection<SpecialtyResponseDTO> result = this.clinicService.findAllSpecialties();
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
     @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "/{specialtyId}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<Specialty> getSpecialty(@PathVariable("specialtyId") String specialtyId){
-		Specialty specialty = this.clinicService.findSpecialtyById(specialtyId);
+	public ResponseEntity<SpecialtyResponseDTO> getSpecialty(@PathVariable("specialtyId") String specialtyId){
+        SpecialtyResponseDTO specialty = this.clinicService.findSpecialtyById(specialtyId);
 		return new ResponseEntity<>(specialty, HttpStatus.OK);
 	}
 
     @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<Specialty> addSpecialty(@RequestBody @Valid SpecialtyDTO specialty){
-		final Specialty result = this.clinicService.saveSpecialty(specialty);
+	public ResponseEntity<SpecialtyResponseDTO> addSpecialty(@RequestBody @Valid SpecialtyRequestDTO specialty){
+		final SpecialtyResponseDTO result = this.clinicService.saveSpecialty(specialty);
 		return new ResponseEntity<>(result, HttpStatus.CREATED);
 	}
 
     @PreAuthorize( "hasRole(@roles.VET_ADMIN)" )
 	@RequestMapping(value = "/{specialtyId}", method = RequestMethod.PUT, produces = "application/json")
-	public ResponseEntity<Specialty> updateSpecialty(@PathVariable("specialtyId") String specialtyId, @RequestBody @Valid SpecialtyDTO specialty){
-		Specialty result = this.clinicService.updateSpecialty(specialtyId, specialty);
+	public ResponseEntity<SpecialtyResponseDTO> updateSpecialty(@PathVariable("specialtyId") String specialtyId, @RequestBody @Valid SpecialtyRequestDTO specialty){
+        SpecialtyResponseDTO result = this.clinicService.updateSpecialty(specialtyId, specialty);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 

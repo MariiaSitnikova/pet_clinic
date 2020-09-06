@@ -17,21 +17,28 @@ package org.springframework.samples.petclinic.service;
 
 import java.util.Collection;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.dto.response.OwnerResponseDTO;
+import org.springframework.samples.petclinic.dto.response.PetResponseDTO;
+import org.springframework.samples.petclinic.dto.response.PetTypeResponseDTO;
+import org.springframework.samples.petclinic.dto.response.SpecialtyResponseDTO;
+import org.springframework.samples.petclinic.dto.response.VetResponseDTO;
+import org.springframework.samples.petclinic.dto.response.VisitResponseDTO;
 import org.springframework.samples.petclinic.exception.EntityNotFoundException;
-import org.springframework.samples.petclinic.model.dto.OwnerDTO;
-import org.springframework.samples.petclinic.model.dto.PetDTO;
+import org.springframework.samples.petclinic.dto.request.OwnerRequestDTO;
+import org.springframework.samples.petclinic.dto.request.PetRequestDTO;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
 import org.springframework.samples.petclinic.model.Specialty;
 import org.springframework.samples.petclinic.model.Vet;
 import org.springframework.samples.petclinic.model.Visit;
-import org.springframework.samples.petclinic.model.dto.PetTypeDTO;
-import org.springframework.samples.petclinic.model.dto.SpecialtyDTO;
-import org.springframework.samples.petclinic.model.dto.VetDTO;
-import org.springframework.samples.petclinic.model.dto.VisitDTO;
+import org.springframework.samples.petclinic.dto.request.PetTypeRequestDTO;
+import org.springframework.samples.petclinic.dto.request.SpecialtyRequestDTO;
+import org.springframework.samples.petclinic.dto.request.VetRequestDTO;
+import org.springframework.samples.petclinic.dto.request.VisitRequestDTO;
 import org.springframework.samples.petclinic.repository.OwnerRepository;
 import org.springframework.samples.petclinic.repository.PetRepository;
 import org.springframework.samples.petclinic.repository.PetTypeRepository;
@@ -52,12 +59,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class ClinicServiceImpl implements ClinicService {
 
-    private PetRepository petRepository;
-    private VetRepository vetRepository;
-    private OwnerRepository ownerRepository;
-    private VisitRepository visitRepository;
-    private SpecialtyRepository specialtyRepository;
-	private PetTypeRepository petTypeRepository;
+    private final PetRepository petRepository;
+    private final VetRepository vetRepository;
+    private final OwnerRepository ownerRepository;
+    private final VisitRepository visitRepository;
+    private final SpecialtyRepository specialtyRepository;
+	private final PetTypeRepository petTypeRepository;
 
     @Autowired
      public ClinicServiceImpl(
@@ -76,38 +83,41 @@ public class ClinicServiceImpl implements ClinicService {
     }
 
     @Override
-    @Transactional
-    public Pet findPetById(String id) {
+    public PetResponseDTO findPetById(String id) {
+        return new PetResponseDTO(findPet(id));
+    }
+
+    private Pet findPet(final String id) {
         return petRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(id, "Pet"));
     }
 
     @Override
-    public Collection<Pet> findAllPets() {
-        return petRepository.findAll();
+    public Collection<PetResponseDTO> findAllPets() {
+        return petRepository.findAll().stream().map(PetResponseDTO::new).collect(Collectors.toList());
     }
 
     @Override
-    public Pet savePet(PetDTO pet) {
-        final Owner owner = findOwnerById(pet.getOwnerId());
-        final PetType type = findPetTypeById(pet.getTypeId());
+    public PetResponseDTO savePet(PetRequestDTO pet) {
+        final Owner owner = findOwner(pet.getOwnerId());
+        final PetType type = findPetType(pet.getTypeId());
         final Pet result = new Pet();
         result.setName(pet.getName());
         result.setBirthDate(pet.getBirthDate());
         result.setOwner(owner);
         result.setType(type);
-        return petRepository.save(result);
+        return new PetResponseDTO(petRepository.save(result));
     }
 
     @Override
-    public Pet updatePet(String id, PetDTO pet) {
-        final Pet existing = findPetById(id);
-        final Owner owner = findOwnerById(pet.getOwnerId());
-        final PetType type = findPetTypeById(pet.getTypeId());
+    public PetResponseDTO updatePet(String id, PetRequestDTO pet) {
+        final Pet existing = findPet(id);
+        final Owner owner = findOwner(pet.getOwnerId());
+        final PetType type = findPetType(pet.getTypeId());
         existing.setName(pet.getName());
         existing.setBirthDate(pet.getBirthDate());
         existing.setOwner(owner);
         existing.setType(type);
-        return petRepository.save(existing);
+        return new PetResponseDTO(petRepository.save(existing));
     }
 
     @Override
@@ -117,39 +127,43 @@ public class ClinicServiceImpl implements ClinicService {
     }
 
     @Override
-    public Collection<Visit> findVisitsByPetId(String petId) {
-        return visitRepository.findByPetId(UUID.fromString(petId));
+    public Collection<VisitResponseDTO> findVisitsByPetId(String petId) {
+        return visitRepository.findByPetId(UUID.fromString(petId)).stream().map(VisitResponseDTO::new).collect(Collectors.toList());
     }
 
     @Override
-    public Visit findVisitById(String visitId) {
+    public VisitResponseDTO findVisitById(String visitId) {
+        return new VisitResponseDTO(findVisit(visitId));
+    }
+
+    private Visit findVisit(String visitId) {
         return visitRepository.findById(visitId).orElseThrow(() -> new EntityNotFoundException(visitId, "Visit"));
     }
 
     @Override
-    public Collection<Visit> findAllVisits() {
-        return visitRepository.findAll();
+    public Collection<VisitResponseDTO> findAllVisits() {
+        return visitRepository.findAll().stream().map(VisitResponseDTO::new).collect(Collectors.toList());
     }
 
     @Override
-    public Visit saveVisit(VisitDTO visit) {
-        final Pet pet = findPetById(visit.getPetId());
+    public VisitResponseDTO saveVisit(VisitRequestDTO visit) {
+        final Pet pet = findPet(visit.getPetId());
         final Visit result = new Visit();
         result.setDate(visit.getDate());
         result.setDescription(visit.getDescription());
         result.setPet(pet);
-        return visitRepository.save(result);
+        return new VisitResponseDTO(visitRepository.save(result));
     }
 
     @Override
-    public Visit updateVisit(String id, VisitDTO visit) {
-        final Pet pet = findPetById(visit.getPetId());
-        final Visit result = new Visit();
+    public VisitResponseDTO updateVisit(String id, VisitRequestDTO visit) {
+        final Pet pet = findPet(visit.getPetId());
+        final Visit result = findVisit(id);
         result.setId(UUID.fromString(id));
         result.setDate(visit.getDate());
         result.setDescription(visit.getDescription());
         result.setPet(pet);
-        return visitRepository.save(result);
+        return new VisitResponseDTO(visitRepository.save(result));
     }
 
     @Override
@@ -159,38 +173,42 @@ public class ClinicServiceImpl implements ClinicService {
     }
 
     @Override
-    public Vet findVetById(String id) {
+    public VetResponseDTO findVetById(String id) {
+        return new VetResponseDTO(findVet(id));
+    }
+
+    private Vet findVet(String id) {
         return vetRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(id, "Vet"));
     }
 
     @Override
-    public Collection<Vet> findAllVets() {
-        return vetRepository.findAll();
+    public Collection<VetResponseDTO> findAllVets() {
+        return vetRepository.findAll().stream().map(VetResponseDTO::new).collect(Collectors.toList());
     }
 
     @Override
-    public Vet saveVet(VetDTO vet) {
+    public VetResponseDTO saveVet(VetRequestDTO vet) {
         final Vet result = new Vet();
         vet.getSpecialitiesIds()
             .stream()
-            .map(this::findSpecialtyById)
+            .map(this::findSpecialty)
             .forEach(result::addSpecialty);
         result.setFirstName(vet.getFirstName());
         result.setLastName(vet.getLastName());
-        return vetRepository.save(result);
+        return new VetResponseDTO(vetRepository.save(result));
     }
 
     @Override
-    public Vet updateVet(String id, VetDTO vet) {
-        final Vet result = new Vet();
+    public VetResponseDTO updateVet(String id, VetRequestDTO vet) {
+        final Vet result = findVet(id);
         result.setId(UUID.fromString(id));
         vet.getSpecialitiesIds()
             .stream()
-            .map(this::findSpecialtyById)
+            .map(this::findSpecialty)
             .forEach(result::addSpecialty);
         result.setFirstName(vet.getFirstName());
         result.setLastName(vet.getLastName());
-        return vetRepository.save(result);
+        return new VetResponseDTO(vetRepository.save(result));
     }
 
     @Override
@@ -200,37 +218,41 @@ public class ClinicServiceImpl implements ClinicService {
     }
 
     @Override
-    public Owner findOwnerById(String id) {
+    public OwnerResponseDTO findOwnerById(String id) {
+        return new OwnerResponseDTO(findOwner(id));
+    }
+
+    private Owner findOwner(String id) {
         return ownerRepository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException(id, "Owner"));
     }
 
     @Override
-    public Collection<Owner> findAllOwners() {
-        return ownerRepository.findAll();
+    public Collection<OwnerResponseDTO> findAllOwners() {
+        return ownerRepository.findAll().stream().map(OwnerResponseDTO::new).collect(Collectors.toList());
     }
 
     @Override
-    public Owner saveOwner(OwnerDTO owner) {
+    public OwnerResponseDTO saveOwner(OwnerRequestDTO owner) {
         final Owner result = new Owner();
         result.setAddress(owner.getAddress());
         result.setCity(owner.getCity());
         result.setTelephone(owner.getTelephone());
         result.setFirstName(owner.getFirstName());
         result.setLastName(owner.getLastName());
-        return ownerRepository.save(result);
+        return new OwnerResponseDTO(ownerRepository.save(result));
     }
 
     @Override
-    public Owner updateOwner(String ownerId, OwnerDTO owner) {
-        final Owner result = new Owner();
+    public OwnerResponseDTO updateOwner(String ownerId, OwnerRequestDTO owner) {
+        final Owner result = findOwner(ownerId);
         result.setId(UUID.fromString(ownerId));
         result.setAddress(owner.getAddress());
         result.setCity(owner.getCity());
         result.setTelephone(owner.getTelephone());
         result.setFirstName(owner.getFirstName());
         result.setLastName(owner.getLastName());
-        return ownerRepository.save(result);
+        return new OwnerResponseDTO(ownerRepository.save(result));
     }
 
     @Override
@@ -240,30 +262,34 @@ public class ClinicServiceImpl implements ClinicService {
     }
 
     @Override
-    public PetType findPetTypeById(String petTypeId) {
+    public PetTypeResponseDTO findPetTypeById(String petTypeId) {
+        return new PetTypeResponseDTO(findPetType(petTypeId));
+    }
+
+    private PetType findPetType(String petTypeId) {
         return petTypeRepository.findById(petTypeId)
             .orElseThrow(() -> new EntityNotFoundException(petTypeId, "PetType"));
     }
 
     @Override
-    public Collection<PetType> findAllPetTypes() {
-        return petTypeRepository.findAll();
+    public Collection<PetTypeResponseDTO> findAllPetTypes() {
+        return petTypeRepository.findAll().stream().map(PetTypeResponseDTO::new).collect(Collectors.toList());
     }
 
 
     @Override
-    public PetType savePetType(PetTypeDTO petType) {
+    public PetTypeResponseDTO savePetType(PetTypeRequestDTO petType) {
         PetType result = new PetType();
         result.setName(petType.getName());
-        return petTypeRepository.save(result);
+        return new PetTypeResponseDTO(petTypeRepository.save(result));
     }
 
     @Override
-    public PetType updatePetType(String id, PetTypeDTO petType) {
-        PetType result = new PetType();
+    public PetTypeResponseDTO updatePetType(String id, PetTypeRequestDTO petType) {
+        PetType result = findPetType(id);
         result.setId(UUID.fromString(id));
         result.setName(petType.getName());
-        return petTypeRepository.save(result);
+        return new PetTypeResponseDTO(petTypeRepository.save(result));
     }
 
     @Override
@@ -273,28 +299,33 @@ public class ClinicServiceImpl implements ClinicService {
     }
 
     @Override
-    public Specialty findSpecialtyById(String specialtyId) {
+    public SpecialtyResponseDTO findSpecialtyById(String specialtyId) {
+        return new SpecialtyResponseDTO(findSpecialty(specialtyId));
+    }
+
+
+    private Specialty findSpecialty(String specialtyId) {
         return specialtyRepository.findById(specialtyId).orElseThrow(() -> new EntityNotFoundException(specialtyId, "Speciality"));
     }
 
     @Override
-    public Collection<Specialty> findAllSpecialties() {
-        return specialtyRepository.findAll();
+    public Collection<SpecialtyResponseDTO> findAllSpecialties() {
+        return specialtyRepository.findAll().stream().map(SpecialtyResponseDTO::new).collect(Collectors.toList());
     }
 
     @Override
-    public Specialty saveSpecialty(SpecialtyDTO specialty) {
+    public SpecialtyResponseDTO saveSpecialty(SpecialtyRequestDTO specialty) {
         final Specialty result = new Specialty();
         result.setName(specialty.getName());
-        return specialtyRepository.save(result);
+        return new SpecialtyResponseDTO(specialtyRepository.save(result));
     }
 
     @Override
-    public Specialty updateSpecialty(String id, SpecialtyDTO specialty) {
+    public SpecialtyResponseDTO updateSpecialty(String id, SpecialtyRequestDTO specialty) {
         final Specialty result = new Specialty();
         result.setId(UUID.fromString(id));
         result.setName(specialty.getName());
-        return specialtyRepository.save(result);
+        return new SpecialtyResponseDTO(specialtyRepository.save(result));
     }
 
     @Override

@@ -17,18 +17,24 @@ package org.springframework.samples.petclinic.service;
 
 import java.util.Collection;
 
-import org.springframework.samples.petclinic.model.dto.OwnerDTO;
-import org.springframework.samples.petclinic.model.dto.PetDTO;
+import org.springframework.samples.petclinic.dto.request.OwnerRequestDTO;
+import org.springframework.samples.petclinic.dto.request.PetRequestDTO;
+import org.springframework.samples.petclinic.dto.response.OwnerResponseDTO;
+import org.springframework.samples.petclinic.dto.response.PetResponseDTO;
+import org.springframework.samples.petclinic.dto.response.PetTypeResponseDTO;
+import org.springframework.samples.petclinic.dto.response.SpecialtyResponseDTO;
+import org.springframework.samples.petclinic.dto.response.VetResponseDTO;
+import org.springframework.samples.petclinic.dto.response.VisitResponseDTO;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
 import org.springframework.samples.petclinic.model.Specialty;
 import org.springframework.samples.petclinic.model.Vet;
 import org.springframework.samples.petclinic.model.Visit;
-import org.springframework.samples.petclinic.model.dto.PetTypeDTO;
-import org.springframework.samples.petclinic.model.dto.SpecialtyDTO;
-import org.springframework.samples.petclinic.model.dto.VetDTO;
-import org.springframework.samples.petclinic.model.dto.VisitDTO;
+import org.springframework.samples.petclinic.dto.request.PetTypeRequestDTO;
+import org.springframework.samples.petclinic.dto.request.SpecialtyRequestDTO;
+import org.springframework.samples.petclinic.dto.request.VetRequestDTO;
+import org.springframework.samples.petclinic.dto.request.VisitRequestDTO;
 
 
 /**
@@ -39,40 +45,40 @@ import org.springframework.samples.petclinic.model.dto.VisitDTO;
  */
 public interface ClinicService {
 
-	Pet findPetById(String id);
-	Collection<Pet> findAllPets();
-	Pet savePet(PetDTO pet);
-	Pet updatePet(String id, PetDTO pet);
+    PetResponseDTO findPetById(String id);
+	Collection<PetResponseDTO> findAllPets();
+    PetResponseDTO savePet(PetRequestDTO pet);
+    PetResponseDTO updatePet(String id, PetRequestDTO pet);
 	void deletePet(String id);
 
-	Collection<Visit> findVisitsByPetId(String petId);
-	Visit findVisitById(String visitId);
-	Collection<Visit> findAllVisits();
-	Visit saveVisit(VisitDTO visit);
-    Visit updateVisit(String id, VisitDTO visit);
+	Collection<VisitResponseDTO> findVisitsByPetId(String petId);
+    VisitResponseDTO findVisitById(String visitId);
+	Collection<VisitResponseDTO> findAllVisits();
+    VisitResponseDTO saveVisit(VisitRequestDTO visit);
+    VisitResponseDTO updateVisit(String id, VisitRequestDTO visit);
 	void deleteVisit(String visitId);
 
-	Vet findVetById(String id);
-	Collection<Vet> findAllVets();
-	Vet saveVet(VetDTO vet);
-	Vet updateVet(String id, VetDTO vet);
+	VetResponseDTO findVetById(String id);
+	Collection<VetResponseDTO> findAllVets();
+    VetResponseDTO saveVet(VetRequestDTO vet);
+    VetResponseDTO updateVet(String id, VetRequestDTO vet);
 	void deleteVet(String vetId);
 
-	Owner findOwnerById(String id);
-	Collection<Owner> findAllOwners();
-	Owner saveOwner(OwnerDTO owner);
-    Owner updateOwner(String ownerId, OwnerDTO owner);
+	OwnerResponseDTO findOwnerById(String id);
+	Collection<OwnerResponseDTO> findAllOwners();
+    OwnerResponseDTO saveOwner(OwnerRequestDTO owner);
+    OwnerResponseDTO updateOwner(String ownerId, OwnerRequestDTO owner);
 	void deleteOwner(String ownerId);
 
-	PetType findPetTypeById(String petTypeId);
-	Collection<PetType> findAllPetTypes();
-	PetType savePetType(PetTypeDTO petType);
-	PetType updatePetType(String id, PetTypeDTO petType);
+	PetTypeResponseDTO findPetTypeById(String petTypeId);
+	Collection<PetTypeResponseDTO> findAllPetTypes();
+    PetTypeResponseDTO savePetType(PetTypeRequestDTO petType);
+    PetTypeResponseDTO updatePetType(String id, PetTypeRequestDTO petType);
 	void deletePetType(String petTypeId);
 
-	Specialty findSpecialtyById(String specialtyId);
-	Collection<Specialty> findAllSpecialties();
-	Specialty saveSpecialty(SpecialtyDTO specialty);
-    Specialty updateSpecialty(String id, SpecialtyDTO specialty);
+	SpecialtyResponseDTO findSpecialtyById(String specialtyId);
+	Collection<SpecialtyResponseDTO> findAllSpecialties();
+    SpecialtyResponseDTO saveSpecialty(SpecialtyRequestDTO specialty);
+    SpecialtyResponseDTO updateSpecialty(String id, SpecialtyRequestDTO specialty);
 	void deleteSpecialty(String specialtyID);
 }

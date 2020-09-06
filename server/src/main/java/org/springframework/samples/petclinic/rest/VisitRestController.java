@@ -24,8 +24,9 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.samples.petclinic.dto.response.VisitResponseDTO;
 import org.springframework.samples.petclinic.model.Visit;
-import org.springframework.samples.petclinic.model.dto.VisitDTO;
+import org.springframework.samples.petclinic.dto.request.VisitRequestDTO;
 import org.springframework.samples.petclinic.service.ClinicService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -50,29 +51,29 @@ public class VisitRestController {
 
     @PreAuthorize( "hasRole(@roles.OWNER_ADMIN)" )
 	@RequestMapping(value = "", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<Collection<Visit>> getAllVisits(){
-		Collection<Visit> visits = this.clinicService.findAllVisits();
+	public ResponseEntity<Collection<VisitResponseDTO>> getAllVisits(){
+		Collection<VisitResponseDTO> visits = this.clinicService.findAllVisits();
 		return new ResponseEntity<>(visits, HttpStatus.OK);
 	}
 
     @PreAuthorize( "hasRole(@roles.OWNER_ADMIN)" )
 	@RequestMapping(value = "/{visitId}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<Visit> getVisit(@PathVariable("visitId") String visitId){
-		Visit visit = this.clinicService.findVisitById(visitId);
+	public ResponseEntity<VisitResponseDTO> getVisit(@PathVariable("visitId") String visitId){
+        VisitResponseDTO visit = this.clinicService.findVisitById(visitId);
 		return new ResponseEntity<>(visit, HttpStatus.OK);
 	}
 
     @PreAuthorize( "hasRole(@roles.OWNER_ADMIN)" )
 	@RequestMapping(value = "", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<Visit> addVisit(@RequestBody @Valid VisitDTO visit) {
-		Visit result = this.clinicService.saveVisit(visit);
+	public ResponseEntity<VisitResponseDTO> addVisit(@RequestBody @Valid VisitRequestDTO visit) {
+        VisitResponseDTO result = this.clinicService.saveVisit(visit);
 		return new ResponseEntity<>(result, HttpStatus.CREATED);
 	}
 
     @PreAuthorize( "hasRole(@roles.OWNER_ADMIN)" )
 	@RequestMapping(value = "/{visitId}", method = RequestMethod.PUT, produces = "application/json")
-	public ResponseEntity<Visit> updateVisit(@PathVariable("visitId") String visitId, @RequestBody @Valid VisitDTO visit){
-		Visit result = this.clinicService.updateVisit(visitId, visit);
+	public ResponseEntity<VisitResponseDTO> updateVisit(@PathVariable("visitId") String visitId, @RequestBody @Valid VisitRequestDTO visit){
+        VisitResponseDTO result = this.clinicService.updateVisit(visitId, visit);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
